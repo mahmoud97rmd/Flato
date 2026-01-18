@@ -1,0 +1,8 @@
+targets:
+  $default:
+    builders:
+      dart2js:
+        options:
+          dart2js_args:
+            - --minify
+            - --trust-primitives

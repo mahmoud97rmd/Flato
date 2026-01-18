@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Chart</title>
+  <script src="lightweight-charts.standalone.production.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; }
+    #chart { height: 100%; width: 100%; }
+  </style>
+</head>
+<body>
+  <div id="chart"></div>
+  <script>
+    const chart = LightweightCharts.createChart(document.body, {
+      layout: { textColor: '#d1d4dc', backgroundColor: '#000' },
+      grid: { vertLines: { color: 'rgba(197, 203, 206, 0.5)' }},
+    });
+    const candleSeries = chart.addCandlestickSeries();
+
+    function setHistory(data) {
+      candleSeries.setData(data);
+    }
+    function updateCandle(candle) {
+      candleSeries.update(candle);
+    }
+  </script>
+</body>
+</html>

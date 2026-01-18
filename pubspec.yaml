@@ -1,0 +1,35 @@
+name: flutter_trading_app
+description: تطبيق تداول مالي احترافي مبني بــ Flutter + Dart
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.20.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  flutter_bloc: ^8.1.0
+  equatable: ^2.0.5
+
+  # HTTP & WebSocket
+  dio: ^5.0.0
+  web_socket_channel: ^2.2.0
+
+  # Local Storage
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  # JSON serialization
+  json_annotation: ^4.8.0
+
+  # Charts
+  fl_chart: ^0.60.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.4.4
+  json_serializable: ^6.6.1

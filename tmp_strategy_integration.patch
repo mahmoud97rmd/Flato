@@ -1,0 +1,42 @@
+--- a/lib/features/market/presentation/bloc/chart/chart_bloc.dart
++++ b/lib/features/market/presentation/bloc/chart/chart_bloc.dart
+@@ -1,6 +1,7 @@
+ import 'package:flutter_bloc/flutter_bloc.dart';
+ import 'chart_event.dart';
+ import 'chart_state.dart';
++import '../../../domain/usecases/evaluate_strategy.dart';
++import '../../../domain/strategy/strategy_config.dart';
+ import '../../../data/models/candle_model.dart';
+ import '../../../data/repositories/market_repository_impl.dart';
+
+@@ -50,10 +51,20 @@ class ChartBloc extends Bloc<ChartEvent, ChartState> {
+       add(UpdateLiveTick(price: price, time: DateTime.parse(json["time"])));
+     });
+ 
+-    on<UpdateLiveTick>(_onLiveTick);
++    on<UpdateLiveTick>((event, emit) {
++      _onLiveTick(event, emit);
++
++      // SIGNAL LOGIC
++      final config = StrategyConfig(
++        emaShort: 50,
++        emaLong: 200,
++        stochPeriod: 14,
++        stochSmoothK: 3,
++        stochSmoothD: 3,
++        stopLossPct: 0.002,
++        takeProfitPct: 0.005,
++        minSignalIntervalSeconds: 60,
++      );
++      final signal = EvaluateStrategy().call(
++        candles: _candles.map((c) => c.toEntity()).toList(),
++        config: config,
++      );
++      if (signal != TradeSignal.NONE) {
++        tradingBloc.add(NewSignal(
++          instrument: symbol,
++          price: event.price,
++          signalType: signal,
++        ));
++      }
++    });

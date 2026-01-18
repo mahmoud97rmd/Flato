@@ -1,0 +1,36 @@
+--- a/lib/features/market/presentation/bloc/chart/chart_bloc.dart
++++ b/lib/features/market/presentation/bloc/chart/chart_bloc.dart
+@@
+   Future<void> _onLoadMore(
+     LoadMoreCandles event,
+     Emitter<ChartState> emit,
+   ) async {
+     if (_isLoadingMore || _candles.isEmpty) return;
+     _isLoadingMore = true;
+ 
+     try {
+-      final oldest = _candles.first.time;
+-
+-      final more = await repository.getHistoricalCandles(
+-        symbol: symbol,
+-        timeframe: timeframe,
+-        count: _loadCount,
+-        to: oldest.subtract(Duration(seconds: 1)),
+-      );
++      final oldest = _candles.first.time;
++      final more = await repository.getHistoricalCandlesPage(
++        symbol: symbol,
++        timeframe: timeframe,
++        count: _loadCount,
++        to: oldest.subtract(Duration(seconds: 1)),
++      );
+ 
+       if (more.isNotEmpty) {
+         _candles = [...more, ..._candles];
+         emit(ChartLoaded(candles: _candles));
+       } else {
+         emit(ChartLoaded(candles: _candles, canLoadMore: false));
+       }
+@@
+     _isLoadingMore = false;
+   }
